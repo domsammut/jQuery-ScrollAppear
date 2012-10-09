@@ -89,6 +89,7 @@
 						$(action.InternalSettings.ShowElements[count]).hide();
 						$(action.InternalSettings.ShowElements[count]).addClass(action.settings.AddClass);
 						$(action.InternalSettings.ShowElements[count]).delay(count * action.settings.DelayEffect).fadeIn('50');
+						$(action.InternalSettings.ShowElements[count]).delay(count * action.settings.DelayEffect).fadeIn(action.settings.EffectDuration);
 						count++;
 					}
 					action.InternalSettings.ShowElements.splice(0,action.settings.ElementsToShow); //remove this element
