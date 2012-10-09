@@ -12,38 +12,41 @@
 "use strict";
 
 		var action = {
-			init				: function ( params ) {
+		
+			init					: function ( params ) {
 			
 				var settings = $.prototype.extend( {
-					'ElementAffect'		: 'div',
-					'PixelOffset'		: 0,
-					'NumberOfScrolls'	: 100,
-					'Timeout'			: 1000,
-					'DelayEffect'		: 110,
-					'ElementsToShow'	: 3,
-					'Animation'			: 'slideDown()',
-					'AddClass'			: 'show',
-					'TriggerType'		: 'scroll'
+					AddClass		: 'scrollshow',
+					DelayEffect		: 0,
+					EffectDuration	: 'fast',
+					ElementAffect	: 'div',
+					ElementsToShow	: 3,
+					NumberOfScrolls : 100,
+					PixelOffset		: 0,
+					Timeout			: 1000,
+					TriggerIntent	: true,
+					TriggerType		: 'scroll'
 				}, params);
 				
 				action.settings = settings;
 				action.settings.t = $(this);
 				action.BindEvent();
 				action.GatherElements();
-
+				
 				return this;
-					
 			},  
 			InternalSettings	: {
 				counter			: 0,
 				ShowElements	: [],
-				BOLtimeout		: false
+				BoolTimeout		: false,
+				NumOfEl			: 0
 			}, 
 			BindEvent			: function() {
-				$(window).on(action.settings.TriggerType, function(event) {
-					event.preventDefault();
+				$(window).on(action.settings.TriggerType, function(e) {
+					e.stopImmediatePropagation();
 					action.CheckScroll(); 
-				});
+					}
+				);
 				return this;
 			},
 			UnbindEvent			: function() {
@@ -61,7 +64,9 @@
 						action.InternalSettings.ShowElements.push(this.el[this.g]);
 					}
 				}
-				action.InternalSettings.ResetElements = action.InternalSettings.ShowElements.slice();		
+				action.InternalSettings.ResetElements = action.InternalSettings.ShowElements.slice();
+				action.InternalSettings.NumOfEl = action.InternalSettings.ShowElements.length;
+				return this;	
 			},
 			CheckCount			: function() {
 				if(action.InternalSettings.ShowElements.length > 1 ) {
@@ -72,40 +77,87 @@
 				return false;
 			},
 			CheckScroll			: function() {	
-				if(action.InternalSettings.BOLtimeout === false) {
+				if(action.InternalSettings.BoolTimeout === false) {
 					if(action.CheckCount() === true) {
 						if(action.GetElementPosition() === true) {
-							action.InternalSettings.BOLtimeout = true;
+						
+							action.InternalSettings.BoolTimeout = true;
+							
 							action.ShowElements();
-							setTimeout(function(){action.InternalSettings.BOLtimeout = false;}, action.settings.Timeout);
+							
+							/*
+							* Prevent mass scroll appear by default
+							* 
+							* This can be disabled by using the following settings:
+							*	Timeout : 0,
+							*	TriggerIntent : false
+							*/
+							setTimeout(function(){
+							
+								action.InternalSettings.BoolTimeout = false;
+								
+								if(action.settings.TriggerIntent === true) {
+									action.CheckScroll();
+								}
+								
+							}, action.settings.Timeout);
 						}	
 					} 
 				}
 			},
 			ShowElements		: function() {
+			/*
+			* This is where the effects are applied. Change to your liking.
+			* This currently isn't a parameter.
+			*/
 				if(action.CheckCount() === true) {
 					var count = 0;
 					while(count < action.settings.ElementsToShow) {
 						$(action.InternalSettings.ShowElements[count]).hide();
 						$(action.InternalSettings.ShowElements[count]).addClass(action.settings.AddClass);
-						$(action.InternalSettings.ShowElements[count]).delay(count * action.settings.DelayEffect).fadeIn('50');
 						$(action.InternalSettings.ShowElements[count]).delay(count * action.settings.DelayEffect).fadeIn(action.settings.EffectDuration);
 						count++;
 					}
 					action.InternalSettings.ShowElements.splice(0,action.settings.ElementsToShow); //remove this element
 					action.InternalSettings.counter++;
-				} 
+				}
 				return this;
 			},
 			HideElements		: function( amount ) {
-				if(amount==='all') {
-					for(this.a=0;this.a<action.InternalSettings.ResetElements.length;this.a++) {
-						$(action.InternalSettings.ResetElements[this.a]).removeClass(action.settings.AddClass);
+				if(action.InternalSettings.counter !== 0) {
+					if(amount==="all") {
+						for(this.a=0;this.a<action.InternalSettings.ResetElements.length;this.a++) {
+							$(action.InternalSettings.ResetElements[this.a]).removeClass(action.settings.AddClass);
+						}
+						action.InternalSettings.counter = 0; 
+						action.InternalSettings.NumOfEl = 0;
+						action.InternalSettings.ShowElements = [];
+						action.InternalSettings.ResetElements = [];
+						action.GatherElements();
+					} else {
+					
+						try {
+							if(typeof amount === "number") {
+								//hide from last shown
+								var c = 1;
+								var pos = action.InternalSettings.ResetElements.length - action.InternalSettings.ShowElements.length;
+								
+								while ( (amount >= c) &&  (action.InternalSettings.ShowElements.length  <=  action.InternalSettings.NumOfEl) ) {
+
+									$(action.InternalSettings.ResetElements[pos-c]).removeClass(action.settings.AddClass);									
+									action.InternalSettings.ShowElements.splice(0, 0, action.InternalSettings.ResetElements[pos-c]);
+									
+									c++;
+								}
+								
+							} else {
+								$.error("Parameter passed in must be numerical or a string that matches 'all'.");
+							}
+							
+						} catch (e) {
+							$.error("Parameter passed in must be numerical or a string that matches 'all'.");
+						}
 					}
-					action.InternalSettings.counter = 0;
-					action.InternalSettings.ShowElements = [];
-					action.InternalSettings.ResetElements = [];
-					action.GatherElements();
 				}
 				return this;
 			},
@@ -113,7 +165,7 @@
 				action.UnbindEvent();
 				action.ResetCounter();
 				action.settings = [];
-				action.InternalSettings = {counter : 0, ShowElements : [], BOLtimeout : false};
+				action.InternalSettings = {counter : 0, ShowElements : [], BoolTimeout : false, NumOfEl : 0};
 				return this;
 			},
 			GetElementPosition	: function() {
@@ -135,6 +187,7 @@
 				action.InternalSettings.ShowElements = [];
 				action.InternalSettings.ResetElements = [];
 				action.GatherElements();
+
 			},
 			CheckClassArray		: function(el) {
 				action.CheckClassArray.el = $(el);
@@ -155,7 +208,7 @@
 
 			}
 		};
-	
+
 	$.prototype.ScrollAppear = function( method ) {
 		
 		if(action[method]) {
@@ -163,10 +216,9 @@
 		} else if (typeof method === "object" || ! method) {
 			return action.init.apply(this, arguments);
 		} else {
-			$.error("Method " + method + " does not exist, ensure you have spelt it correctly along with correct letter case");
+			$.error("Action " + method + " does not exist, ensure you have spelt it correctly along with correct letter case.");
 		}
-		
-	};	
+	};
 	
 	
 	$.each(['append', 'appendTo',  'html', 'prepend', 'prependTo', 'after', 'before', 'insertBefore', 'insertAfter', 'remove', 'unwrap', 'wrap', 'wrapAll', 'wrapInner'], function(index, trigger) {
