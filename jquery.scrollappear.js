@@ -1,5 +1,5 @@
 /*
-* jQuery ScrollAppear 0.9.1
+* jQuery ScrollAppear 0.9.2
 * Copyright (c) 2012 Dom Sammut
 * Licensed under the MIT license (http://www.opensource.org/licenses/mit-license.php)
 *
@@ -71,7 +71,7 @@
             return this;
         },
         CheckCount : function () {
-            if (action.InternalSettings.ShowElements.length > 1) {
+            if (action.InternalSettings.ShowElements.length >= 1) {
                 if (action.InternalSettings.counter <=  action.settings.NumberOfScrolls) {
                     return true;
                 }
