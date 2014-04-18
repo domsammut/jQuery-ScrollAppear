@@ -1,5 +1,5 @@
 /**
- * jQuery ScrollAppear 1.0.0
+ * jQuery ScrollAppear 1.0.1
  * Copyright (c) 2014 Dom Sammut
  * Licensed under the MIT license (http://www.opensource.org/licenses/mit-license.php)
  *
@@ -44,15 +44,22 @@
             BoolTimeout  : false,
             NumOfEl      : 0
         },
-        BindEvent : function () {
-            $(window).on(action.settings.TriggerType, function (e) {
+        BindEvent : function (type) {
+            type = type || action.settings.TriggerType;
+
+            $(window).on(type, function (e) {
                 e.stopImmediatePropagation();
                 action.CheckScroll();
             });
+
             return this;
         },
-        UnbindEvent : function () {
-            $(window).off(action.settings.TriggerType);
+        UnbindEvent : function (type) {
+
+            type = type || action.settings.TriggerType;
+
+            $(window).off(type);
+
             return this;
         },
         ResetCounter : function () {
@@ -181,7 +188,7 @@
                     this.left >= window.pageXOffset &&
                     ((this.top + this.height)) <= (window.pageYOffset + window.innerHeight) &&
                     (this.left + this.width) <= (window.pageXOffset + window.innerWidth)
-            );
+                );
 
         },
         DomUpdate : function () {
