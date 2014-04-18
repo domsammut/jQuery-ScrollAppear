@@ -1,11 +1,11 @@
-/*
-* jQuery ScrollAppear 0.9.2
-* Copyright (c) 2012 Dom Sammut
-* Licensed under the MIT license (http://www.opensource.org/licenses/mit-license.php)
-*
-* Requires jQuery v 1.7.0 +
-* Documentation at http://www.domsammut.com
-*/
+/**
+ * jQuery ScrollAppear 1.0.0
+ * Copyright (c) 2014 Dom Sammut
+ * Licensed under the MIT license (http://www.opensource.org/licenses/mit-license.php)
+ *
+ * Requires jQuery v 1.7.0 +
+ * Documentation at https://www.domsammut.com/projects/jquery-scrollappear
+ */
 
 /*jslint browser: true*/
 /*global jQuery*/
@@ -19,16 +19,16 @@
         init : function (params) {
 
             var settings = $.prototype.extend({
-                AddClass		: 'scrollshow',
-                DelayEffect		: 0,
-                EffectDuration	: 'fast',
-                ElementAffect	: 'div',
-                ElementsToShow	: 3,
+                AddClass        : 'scrollshow',
+                DelayEffect     : 0,
+                EffectDuration  : 'fast',
+                ElementAffect   : 'div',
+                ElementsToShow  : 3,
                 NumberOfScrolls : 100,
-                PixelOffset		: 0,
-                Timeout			: 1000,
-                TriggerIntent	: true,
-                TriggerType		: 'scroll'
+                PixelOffset     : 0,
+                Timeout         : 1000,
+                TriggerIntent   : true,
+                TriggerType     : 'scroll'
             }, params);
 
             action.settings = settings;
@@ -39,10 +39,10 @@
             return this;
         },
         InternalSettings : {
-            counter			: 0,
-            ShowElements	: [],
-            BoolTimeout		: false,
-            NumOfEl			: 0
+            counter      : 0,
+            ShowElements : [],
+            BoolTimeout  : false,
+            NumOfEl      : 0
         },
         BindEvent : function () {
             $(window).on(action.settings.TriggerType, function (e) {
@@ -88,12 +88,12 @@
                         action.ShowElements();
 
                         /*
-                        * Prevent mass scroll appear by default
-                        *
-                        * This can be disabled by using the following settings:
-                        *	Timeout : 0,
-                        *	TriggerIntent : false
-                        */
+                         * Prevent mass scroll appear by default
+                         *
+                         * This can be disabled by using the following settings:
+                         * Timeout : 0,
+                         * TriggerIntent : false
+                         */
                         setTimeout(function () {
 
                             action.InternalSettings.BoolTimeout = false;
@@ -108,10 +108,10 @@
             }
         },
         ShowElements : function () {
-        /*
-        * This is where the effects are applied. Change to your liking.
-        * This currently isn't a parameter.
-        */
+            /*
+             * This is where the effects are applied. Change to your liking.
+             * This currently isn't a parameter.
+             */
             if (action.CheckCount() === true) {
                 var count = 0;
                 while (count < action.settings.ElementsToShow) {
@@ -178,9 +178,9 @@
 
             return (
                 this.top >= window.pageYOffset &&
-                this.left >= window.pageXOffset &&
-                ((this.top + this.height)) <= (window.pageYOffset + window.innerHeight) &&
-                (this.left + this.width) <= (window.pageXOffset + window.innerWidth)
+                    this.left >= window.pageXOffset &&
+                    ((this.top + this.height)) <= (window.pageYOffset + window.innerHeight) &&
+                    (this.left + this.width) <= (window.pageXOffset + window.innerWidth)
             );
 
         },
@@ -211,24 +211,24 @@
         }
     };
 
-	$.prototype.ScrollAppear = function (method) {
-		if (action[method]) {
-			return action[method].apply(this, Array.prototype.slice.call(arguments, 1));
-		}
+    $.prototype.ScrollAppear = function (method) {
+        if (action[method]) {
+            return action[method].apply(this, Array.prototype.slice.call(arguments, 1));
+        }
         if (typeof method === "object" || !method) {
-			return action.init.apply(this, arguments);
+            return action.init.apply(this, arguments);
         }
         $.error("Action " + method + " does not exist, ensure you have spelt it correctly along with correct letter case.");
-	};
+    };
 
-	$.each(['append', 'appendTo',  'html', 'prepend', 'prependTo', 'after', 'before', 'insertBefore', 'insertAfter', 'remove', 'unwrap', 'wrap', 'wrapAll', 'wrapInner'], function (index, trigger) {
-		var prev = $.prototype[trigger];
-		if (prev) {
-			$.prototype[trigger] = function () {
-				var passthrough = prev.apply(this, arguments);
-				$.prototype.ScrollAppear('DomUpdate');
-				return passthrough;
-			};
-		}
-	});
+    $.each(['after', 'append', 'appendTo', 'before', 'clone', 'html', 'insertAfter', 'insertBefore', 'prepend', 'prependTo', 'remove', 'replaceAll', 'replaceWith', 'unwrap', 'wrap', 'wrapAll', 'wrapInner'], function (index, trigger) {
+        var prev = $.prototype[trigger];
+        if (prev) {
+            $.prototype[trigger] = function () {
+                var passthrough = prev.apply(this, arguments);
+                $.prototype.ScrollAppear('DomUpdate');
+                return passthrough;
+            };
+        }
+    });
 }(jQuery));
