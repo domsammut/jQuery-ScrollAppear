@@ -9,7 +9,7 @@
         "scroll",
         "trigger"
     ],
-    "version": "1.0.2",
+    "version": "1.0.3",
     "author": {
         "name": "Dom Sammut",
         "url": "https://www.domsammut.com"
@@ -30,7 +30,7 @@
     "docs": "https://www.domsammut.com/projects/jquery-scrollappear",
     "bugs": "https://github.com/domsammut/jQuery-ScrollAppear/issues",
     "download": "https://www.domsammut.com/projects/jquery-scrollappear",
-    "demo": "https://www.domsammut.com/wp-content/uploads/projects/jquery.scrollappear-demo.html",
+    "demo": "https://www.domsammut.com/projects/jquery-scrollappear/demo",
     "dependencies": {
         "jquery": ">=1.7.0"
     }
