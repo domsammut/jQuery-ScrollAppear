@@ -1,6 +1,6 @@
 {
     "name": "scrollAppear",
-    "title": "ScrollAppear",
+    "title": "jQuery ScrollAppear",
     "description": "jQuery ScrollAppear is a powerful and agile content appear on scroll (or on other event triggers) plugin for jQuery.",
     "keywords": [
         "appear",
@@ -23,7 +23,7 @@
     "licenses": [
         {
             "type": "MIT",
-            "url": "https://github.com/domsammut/jQuery-ScrollAppear/blob/license.txt"
+            "url": "https://github.com/domsammut/jQuery-ScrollAppear/blob/master/license.txt"
         }
     ],
     "homepage": "https://www.domsammut.com/projects/jquery-scrollappear",
