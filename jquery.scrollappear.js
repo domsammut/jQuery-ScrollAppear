@@ -1,5 +1,5 @@
 /**
- * jQuery ScrollAppear 1.0.1
+ * jQuery ScrollAppear 1.0.2
  * Copyright (c) 2014 Dom Sammut
  * Licensed under the MIT license (http://www.opensource.org/licenses/mit-license.php)
  *
@@ -133,6 +133,9 @@
             return this;
         },
         HideElements : function (amount) {
+
+            amount = amount || action.settings.ElementsToShow;
+
             if (action.InternalSettings.counter !== 0) {
                 if (amount === "all") {
                     for (this.a = 0; this.a < action.InternalSettings.ResetElements.length; this.a += 1) {
