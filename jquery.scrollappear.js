@@ -1,5 +1,5 @@
 /**
- * jQuery ScrollAppear 1.0.2
+ * jQuery ScrollAppear 1.0.4
  * Copyright (c) 2014 Dom Sammut
  * Licensed under the MIT license (http://www.opensource.org/licenses/mit-license.php)
  *
@@ -181,17 +181,27 @@
         },
         GetElementPosition : function () {
 
+            /**
+             * Add backwards compatibility for browsers that don't support window.page{value}Offset and window.inner{value}
+             * @since 1.0.4
+             * @type {Number|number|number}
+             */
+            var innerHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight,
+                innerWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
+                offsetX = window.pageXOffset || document.body.scrollLeft || document.documentElement.scrollLeft,
+                offsetY = window.pageYOffset || document.body.scrollTop || document.documentElement.scrollTop;
+
             this.top = action.settings.t.offset().top - action.settings.PixelOffset;
             this.left = action.settings.t.offset().left;
             this.width =  action.settings.t.width();
             this.height = action.settings.t.height();
 
             return (
-                this.top >= window.pageYOffset &&
-                    this.left >= window.pageXOffset &&
-                    ((this.top + this.height)) <= (window.pageYOffset + window.innerHeight) &&
-                    (this.left + this.width) <= (window.pageXOffset + window.innerWidth)
-                );
+                this.top >= offsetY &&
+                    this.left >= offsetX &&
+                    ((this.top + this.height)) <= (offsetY + innerHeight) &&
+                    (this.left + this.width) <= (offsetX + innerWidth)
+            );
 
         },
         DomUpdate : function () {
