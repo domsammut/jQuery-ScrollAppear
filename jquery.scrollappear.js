@@ -1,5 +1,5 @@
 /**
- * jQuery ScrollAppear 1.0.4
+ * jQuery ScrollAppear 1.0.5
  * Copyright (c) 2014 Dom Sammut
  * Licensed under the MIT license (http://www.opensource.org/licenses/mit-license.php)
  *
@@ -20,6 +20,7 @@
 
             var settings = $.prototype.extend({
                 AddClass        : 'scrollshow',
+                Callback        : function () {},
                 DelayEffect     : 0,
                 EffectDuration  : 'fast',
                 ElementAffect   : 'div',
@@ -129,6 +130,12 @@
                 }
                 action.InternalSettings.ShowElements.splice(0, action.settings.ElementsToShow); //remove this element
                 action.InternalSettings.counter += 1;
+
+                /**
+                 * Support for a callback function to allow for additional code to be executed when the ShowElements is fired.
+                 * @since 1.0.5
+                 */
+                action.settings.Callback();
             }
             return this;
         },
