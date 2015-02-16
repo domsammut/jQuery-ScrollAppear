@@ -1,6 +1,6 @@
 /**
- * jQuery ScrollAppear 1.0.5
- * Copyright (c) 2014 Dom Sammut
+ * jQuery ScrollAppear 1.0.6
+ * Copyright (c) 2015 Dom Sammut
  * Licensed under the MIT license (http://www.opensource.org/licenses/mit-license.php)
  *
  * Requires jQuery v 1.7.0 +
@@ -19,17 +19,18 @@
         init : function (params) {
 
             var settings = $.prototype.extend({
-                AddClass        : 'scrollshow',
-                Callback        : function () {},
-                DelayEffect     : 0,
-                EffectDuration  : 'fast',
-                ElementAffect   : 'div',
-                ElementsToShow  : 3,
-                NumberOfScrolls : 100,
-                PixelOffset     : 0,
-                Timeout         : 1000,
-                TriggerIntent   : true,
-                TriggerType     : 'scroll'
+                AddClass           : 'scrollshow',
+                Callback           : function (e) { return null; },
+                DelayEffect        : 0,
+                EffectDuration     : 'fast',
+                ElementAffect      : 'div',
+                ElementsToShow     : 3,
+                GatherAfterTrigger : false,
+                NumberOfScrolls    : 100,
+                PixelOffset        : 0,
+                Timeout            : 1000,
+                TriggerIntent      : true,
+                TriggerType        : 'scroll'
             }, params);
 
             action.settings = settings;
@@ -132,10 +133,25 @@
                 action.InternalSettings.counter += 1;
 
                 /**
+                 * Update the DOM after we've displayed elements
+                 * @since 1.0.6
+                 */
+                if (action.settings.GatherAfterTrigger === true) {
+                    this.DomUpdate();
+                }
+
+                /**
                  * Support for a callback function to allow for additional code to be executed when the ShowElements is fired.
                  * @since 1.0.5
+                 * Pass internal variables
+                 * @since 1.0.6
                  */
-                action.settings.Callback();
+
+                action.settings.Callback({
+                    elementsToShow: action.InternalSettings.ShowElements,
+                    numberOfElements : action.InternalSettings.NumOfEl,
+                    timesFired : action.InternalSettings.counter
+                });
             }
             return this;
         },
@@ -248,7 +264,7 @@
         $.error("Action " + method + " does not exist, ensure you have spelt it correctly along with correct letter case.");
     };
 
-    $.each(['after', 'append', 'appendTo', 'before', 'clone', 'html', 'insertAfter', 'insertBefore', 'prepend', 'prependTo', 'remove', 'replaceAll', 'replaceWith', 'unwrap', 'wrap', 'wrapAll', 'wrapInner'], function (index, trigger) {
+    $.each(['after', 'append', 'appendTo', 'before', 'clone', 'detach', 'empty', 'html', 'insertAfter', 'insertBefore', 'prepend', 'prependTo', 'remove', 'replaceAll', 'replaceWith', 'unwrap', 'wrap', 'wrapAll', 'wrapInner'], function (index, trigger) {
         var prev = $.prototype[trigger];
         if (prev) {
             $.prototype[trigger] = function () {
