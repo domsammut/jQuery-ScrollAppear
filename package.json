@@ -1,6 +1,6 @@
 {
   "name": "jquery-scrollappear",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "jQuery ScrollAppear is a powerful and agile content appear on scroll (or on other event triggers) plugin for jQuery.",
   "main": "jquery.scrollappear.js",
   "repository": {
