@@ -69,15 +69,18 @@
             return this;
         },
         GatherElements : function () {
-            this.el = $(action.settings.ElementAffect);
-            for (this.g = 0; this.g < this.el.length; this.g += 1) {
-                if (action.CheckClassArray(this.el[this.g]) === false) {
-                    action.InternalSettings.ShowElements.push(this.el[this.g]);
+            //whether action.settings is undefined or not
+            if(action.settings !== undefined){
+                this.el = $(action.settings.ElementAffect);
+                for (this.g = 0; this.g < this.el.length; this.g += 1) {
+                    if (action.CheckClassArray(this.el[this.g]) === false) {
+                        action.InternalSettings.ShowElements.push(this.el[this.g]);
+                    }
                 }
+                action.InternalSettings.ResetElements = action.InternalSettings.ShowElements.slice();
+                action.InternalSettings.NumOfEl = action.InternalSettings.ShowElements.length;
+                return this;
             }
-            action.InternalSettings.ResetElements = action.InternalSettings.ShowElements.slice();
-            action.InternalSettings.NumOfEl = action.InternalSettings.ShowElements.length;
-            return this;
         },
         CheckCount : function () {
             if (action.InternalSettings.ShowElements.length >= 1) {
