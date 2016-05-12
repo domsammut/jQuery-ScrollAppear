@@ -1,5 +1,5 @@
 /**
- * jQuery ScrollAppear 1.0.6
+ * jQuery ScrollAppear 1.0.7
  * Copyright (c) 2015 Dom Sammut
  * Licensed under the MIT license (http://www.opensource.org/licenses/mit-license.php)
  *
